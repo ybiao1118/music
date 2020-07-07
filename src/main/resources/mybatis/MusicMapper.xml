@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqyb.music.dao.MusicMapper" >
+  <resultMap id="BaseResultMap" type="com.cqyb.music.entity.Music" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="mp3" property="mp3" jdbcType="VARCHAR" />
+    <result column="lyrics" property="lyrics" jdbcType="VARCHAR" />
+    <result column="dnumber" property="dnumber" jdbcType="INTEGER" />
+    <result column="snumber" property="snumber" jdbcType="INTEGER" />
+    <result column="cnumber" property="cnumber" jdbcType="INTEGER" />
+    <result column="pnumber" property="pnumber" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="is_audit" property="isAudit" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, pid, image, mp3, lyrics, dnumber, snumber, cnumber, pnumber, is_delete, 
+    is_audit, create_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cqyb.music.entity.MusicExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_music
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_music
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_music
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cqyb.music.entity.MusicExample" >
+    delete from t_music
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cqyb.music.entity.Music" >
+    insert into t_music (id, name, pid, 
+      image, mp3, lyrics, 
+      dnumber, snumber, cnumber, 
+      pnumber, is_delete, is_audit, 
+      create_time)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      #{image,jdbcType=VARCHAR}, #{mp3,jdbcType=VARCHAR}, #{lyrics,jdbcType=VARCHAR}, 
+      #{dnumber,jdbcType=INTEGER}, #{snumber,jdbcType=INTEGER}, #{cnumber,jdbcType=INTEGER}, 
+      #{pnumber,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER}, #{isAudit,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cqyb.music.entity.Music" >
+    insert into t_music
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="mp3 != null" >
+        mp3,
+      </if>
+      <if test="lyrics != null" >
+        lyrics,
+      </if>
+      <if test="dnumber != null" >
+        dnumber,
+      </if>
+      <if test="snumber != null" >
+        snumber,
+      </if>
+      <if test="cnumber != null" >
+        cnumber,
+      </if>
+      <if test="pnumber != null" >
+        pnumber,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="isAudit != null" >
+        is_audit,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3 != null" >
+        #{mp3,jdbcType=VARCHAR},
+      </if>
+      <if test="lyrics != null" >
+        #{lyrics,jdbcType=VARCHAR},
+      </if>
+      <if test="dnumber != null" >
+        #{dnumber,jdbcType=INTEGER},
+      </if>
+      <if test="snumber != null" >
+        #{snumber,jdbcType=INTEGER},
+      </if>
+      <if test="cnumber != null" >
+        #{cnumber,jdbcType=INTEGER},
+      </if>
+      <if test="pnumber != null" >
+        #{pnumber,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isAudit != null" >
+        #{isAudit,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cqyb.music.entity.MusicExample" resultType="java.lang.Integer" >
+    select count(*) from t_music
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_music
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null" >
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mp3 != null" >
+        mp3 = #{record.mp3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lyrics != null" >
+        lyrics = #{record.lyrics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dnumber != null" >
+        dnumber = #{record.dnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.snumber != null" >
+        snumber = #{record.snumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.cnumber != null" >
+        cnumber = #{record.cnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.pnumber != null" >
+        pnumber = #{record.pnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.isDelete != null" >
+        is_delete = #{record.isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.isAudit != null" >
+        is_audit = #{record.isAudit,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_music
+    set id = #{record.id,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      image = #{record.image,jdbcType=VARCHAR},
+      mp3 = #{record.mp3,jdbcType=VARCHAR},
+      lyrics = #{record.lyrics,jdbcType=VARCHAR},
+      dnumber = #{record.dnumber,jdbcType=INTEGER},
+      snumber = #{record.snumber,jdbcType=INTEGER},
+      cnumber = #{record.cnumber,jdbcType=INTEGER},
+      pnumber = #{record.pnumber,jdbcType=INTEGER},
+      is_delete = #{record.isDelete,jdbcType=INTEGER},
+      is_audit = #{record.isAudit,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cqyb.music.entity.Music" >
+    update t_music
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="mp3 != null" >
+        mp3 = #{mp3,jdbcType=VARCHAR},
+      </if>
+      <if test="lyrics != null" >
+        lyrics = #{lyrics,jdbcType=VARCHAR},
+      </if>
+      <if test="dnumber != null" >
+        dnumber = #{dnumber,jdbcType=INTEGER},
+      </if>
+      <if test="snumber != null" >
+        snumber = #{snumber,jdbcType=INTEGER},
+      </if>
+      <if test="cnumber != null" >
+        cnumber = #{cnumber,jdbcType=INTEGER},
+      </if>
+      <if test="pnumber != null" >
+        pnumber = #{pnumber,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isAudit != null" >
+        is_audit = #{isAudit,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cqyb.music.entity.Music" >
+    update t_music
+    set name = #{name,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      mp3 = #{mp3,jdbcType=VARCHAR},
+      lyrics = #{lyrics,jdbcType=VARCHAR},
+      dnumber = #{dnumber,jdbcType=INTEGER},
+      snumber = #{snumber,jdbcType=INTEGER},
+      cnumber = #{cnumber,jdbcType=INTEGER},
+      pnumber = #{pnumber,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      is_audit = #{isAudit,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

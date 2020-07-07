@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqyb.music.dao.ext.MusicExtMapper">
+    <resultMap id="BaseResultMap" type="com.cqyb.music.model.MusicVo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="mp3" property="mp3" jdbcType="VARCHAR"/>
+        <result column="lyrics" property="lyrics" jdbcType="VARCHAR"/>
+        <result column="dnumber" property="dnumber" jdbcType="INTEGER" />
+        <result column="snumber" property="snumber" jdbcType="INTEGER" />
+        <result column="cnumber" property="cnumber" jdbcType="INTEGER" />
+        <result column="pnumber" property="pnumber" jdbcType="INTEGER" />
+        <result column="pname" property="pname" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        m.id,m.`name`,m.pid,m.image,m.mp3,m.lyrics,m.pnumber,m.cnumber,m.dnumber,m.snumber,p.`name` as pname,m.create_time
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="Base_Column_List" />
+       from t_music m,t_player p
+        <trim prefix="WHERE" prefixOverrides="AND | OR ">
+            and m.pid=p.id
+            <if test="model.id != null">
+                and m.id = #{model.id}
+            </if>
+            <if test="model.pid != null">
+                and m.pid = #{model.pid}
+            </if>
+            <if test="model.keyWord!=null">
+                and m.name like #{model.keyWord}
+            </if>
+            and is_delete=0
+        </trim>
+    </select>
+    <select id="selectOrderByExample" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from t_music m,t_player p where m.pid=p.id and m.is_delete=0
+        <trim>
+            <if test="example!=null and example==1">
+                order by m.dnumber desc limit 50
+            </if>
+            <if test="example!=null and example==2">
+                order by m.snumber desc limit 50
+            </if>
+            <if test="example!=null and example==3">
+                order by m.cnumber desc limit 50
+            </if>
+            <if test="example!=null and example==4">
+                order by m.pnumber desc limit 50
+            </if>
+        </trim>
+
+    </select>
+    <select id="selectByCreateTime" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from t_music m,t_player p where m.pid=p.id and m.is_delete=0
+        order by m.create_time desc limit 20
+
+    </select>
+    <select id="selectByPlid" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM t_playlist_center pc,t_music m,t_player p
+        WHERE  pc.plid=#{plid}  and pc.mid=m.id and m.pid=p.id and m.is_delete=0
+    </select>
+    <select id="selectAll" resultType="java.lang.String">
+        select  id  from  t_music
+    </select>
+</mapper>

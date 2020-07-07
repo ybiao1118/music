@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqyb.music.dao.ext.DynamicExtMapper" >
+    <resultMap id="BaseResultMap" type="com.cqyb.music.model.DynamicVo" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="uid" property="uid" jdbcType="VARCHAR" />
+        <result column="znumber" property="znumber" jdbcType="INTEGER" />
+        <result column="fnumber" property="fnumber" jdbcType="INTEGER" />
+        <result column="pnumber" property="pnumber" jdbcType="INTEGER" />
+        <result column="comment" property="comment" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
+        <result column="file" property="file" jdbcType="VARCHAR" />
+        <result column="uname" property="uname" jdbcType="VARCHAR" />
+        <result column="ucity" property="ucity" jdbcType="VARCHAR" />
+        <result column="uimage" property="uimage" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        d.id,d.uid,d.znumber,d.fnumber,d.pnumber,d.comment ,d.time ,d.file, u.name as uname,u.city as ucity,u.image as uimage
+    </sql>
+    <select id="selectByTime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user u,t_dynamic d
+        WHERE u.id=d.uid order by d.time desc,d.znumber desc
+    </select>
+    <select id="selectByTimeAndUid" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user u,t_dynamic d
+        WHERE u.id=d.uid and d.uid=#{uid} group by d.time desc
+    </select>
+    <select id="selectByTimeAndId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user u,t_dynamic d
+        WHERE u.id=d.uid and d.id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqyb.music.dao.ext.PlaylistExtMapper" >
+    <resultMap id="BaseResultMap" type="com.cqyb.music.model.PlaylistVo" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="uid" property="uid" jdbcType="VARCHAR" />
+        <result column="pnumber" property="pnumber" jdbcType="INTEGER" />
+        <result column="cnumber" property="cnumber" jdbcType="INTEGER" />
+        <result column="is_online" property="isOnline" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="image" property="image" jdbcType="VARCHAR" />
+        <result column="uname" property="uname" jdbcType="VARCHAR" />
+        <result column="uimage" property="uimage" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        p.id,p.uid,p.pnumber,p.cnumber,p.is_online,p.name ,p.image ,u.name as uname , u.image as uimage
+    </sql>
+    <select id="SelectByUid" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from  t_playlist p, t_user u where  p.uid= u.id and  u.id=#{uid}
+    </select>
+    <select id="SelectByExample" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from  t_playlist p, t_user u where  p.uid= u.id and p.is_online=1
+        <trim>
+            <if test="example!=null and example==1">
+                order by p.pnumber desc limit 10
+            </if>
+            <if test="example!=null and example==2">
+                order by p.cnumber desc limit 10
+            </if>
+
+        </trim>
+    </select>
+    <select id="SelectByOnLine" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from  t_playlist p, t_user u where  p.uid= u.id and  p.is_online=1 order by p.cnumber desc limit 50
+    </select>
+    <select id="SelectById" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from  t_playlist p, t_user u where  p.uid= u.id and  p.id=#{plid}
+    </select>
+    <select id="selectAll" resultType="java.lang.String">
+        select  id  from  t_playlist
+    </select>
+</mapper>

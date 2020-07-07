@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqyb.music.dao.ext.CommentsExtMapper" >
+    <resultMap id="BaseResultMap" type="com.cqyb.music.model.CommentsVo" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="xid" property="xid" jdbcType="VARCHAR" />
+        <result column="comment" property="comment" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
+        <result column="znumber" property="znumber" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="VARCHAR" />
+        <result column="parentid" property="parentid" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="image" property="image" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectByDynamic" resultMap="BaseResultMap">
+        SELECT u.`name`,u.image ,dc.id ,dc.did as xid,dc.`comment`,dc.time,dc.znumber,dc.`level`,dc.parentid
+        FROM t_user u,t_dynamic_comments dc
+        WHERE u.id=dc.uid AND dc.did=#{xid}
+    </select>
+    <select id="selectByMusic" resultMap="BaseResultMap">
+        SELECT u.`name`,u.image,mc.id ,mc.mid as xid,mc.`comment`,mc.time,mc.znumber,mc.`level`,mc.parentid
+        FROM t_user u,t_music_comments mc
+        WHERE u.id=mc.uid  AND mc.mid=#{xid}
+    </select>
+    <select id="selectByPlayList" resultMap="BaseResultMap">
+        SELECT u.`name`,u.image,pc.id ,pc.plid as xid,pc.`comment`,pc.time,pc.znumber,pc.`level`,pc.parentid
+        FROM t_user u,t_playlist_comments pc
+        WHERE u.id=pc.uid  AND pc.plid=#{xid}
+    </select>
+</mapper>
